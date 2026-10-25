@@ -210,10 +210,10 @@ export class VideoPlayerModal {
     viewport.innerHTML = `
       <div class="player-error-container">
         <div class="player-error-icon">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="8" x2="12" y2="12"></line>
-            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            <circle cx="12" cy="16" r="1" fill="#ef4444" stroke="none"></circle>
           </svg>
         </div>
         <h3 class="player-error-title">Vídeo Indisponível</h3>
