@@ -167,6 +167,19 @@ function saveLocalLicenses(licenses: License[]) {
 export const MovieService = {
   // Retorna somente filmes publicados para o público visitante
   async getPublicMovies(): Promise<Movie[]> {
+    // 1. Tentar carregar da API Serverless do Neon Postgres (Vercel)
+    try {
+      const res = await fetch('/api/movies');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.movies && data.movies.length > 0) {
+          return data.movies;
+        }
+      }
+    } catch {
+      // Falha silenciosa de rede/offline
+    }
+
     if (isFirebaseConfigured && db) {
       try {
         const q = query(collection(db, 'movies'), where('status', '==', 'published'));
@@ -303,6 +316,17 @@ export const MovieService = {
       updatedAt: now
     };
 
+    // Tentar persistência no banco Neon Postgres (Vercel)
+    try {
+      await fetch('/api/movies', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ movie: completeMovie, license: completeLicense })
+      });
+    } catch {
+      // Falha silenciosa de rede/offline
+    }
+
     if (isFirebaseConfigured && db) {
       try {
         // Salvar licença no Firestore
@@ -373,6 +397,12 @@ export const MovieService = {
   },
 
   async deleteMovie(id: string): Promise<void> {
+    try {
+      await fetch(`/api/movies?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+    } catch {
+      // offline
+    }
+
     if (isFirebaseConfigured && db) {
       try {
         await deleteDoc(doc(db, 'movies', id));
