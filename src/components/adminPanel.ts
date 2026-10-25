@@ -77,40 +77,17 @@ export class AdminPanelModal {
           <p class="admin-login-subtitle">Gestão de catálogo, validação de direitos e publicações</p>
         </div>
 
-        ${!isFirebaseConfigured ? `
-          <div class="admin-demo-alert">
-            <div class="demo-badge">MODO DEMO / OFFLINE</div>
-            <p>O Firebase ainda não foi configurado no arquivo <code>.env</code>. Você pode entrar em modo de demonstração com qualquer e-mail para testar todo o fluxo administrativo!</p>
-          </div>
-        ` : `
-          <div class="admin-firebase-active-alert">
-            <span class="pulse-dot"></span>
-            <p>Conectado ao Firebase Auth & Cloud Firestore.</p>
-          </div>
-        `}
-
         <form id="admin-login-form" class="admin-form">
           <div class="form-group">
-            <label for="admin-email">E-mail do Administrador</label>
-            <input 
-              type="email" 
-              id="admin-email" 
-              required 
-              placeholder="ex: admin@cinepwa.com" 
-              value="${!isFirebaseConfigured ? 'admin@cinepwa.local' : ''}"
-              class="form-input"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="admin-pass">Senha de Acesso</label>
+            <label for="admin-pass">Senha de Acesso do Administrador</label>
             <input 
               type="password" 
               id="admin-pass" 
               required 
-              placeholder="••••••••" 
-              value="${!isFirebaseConfigured ? '123456' : ''}"
+              placeholder="Digite a senha..." 
               class="form-input"
+              autocomplete="current-password"
+              autofocus
             />
           </div>
 
@@ -126,7 +103,7 @@ export class AdminPanelModal {
         </form>
 
         <div class="admin-login-footer">
-          <p>Ambiente restrito. Todas as ações e publicações de licença são auditadas.</p>
+          <p>Ambiente restrito protegido por senha. Apenas administradores autorizados.</p>
         </div>
       </div>
     `;
@@ -136,7 +113,6 @@ export class AdminPanelModal {
     const form = document.getElementById('admin-login-form') as HTMLFormElement;
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = (document.getElementById('admin-email') as HTMLInputElement).value;
       const pass = (document.getElementById('admin-pass') as HTMLInputElement).value;
       const errorEl = document.getElementById('login-error-msg');
       const submitBtn = document.getElementById('btn-login-submit') as HTMLButtonElement;
@@ -148,12 +124,12 @@ export class AdminPanelModal {
       }
 
       try {
-        await AuthService.login(email, pass);
+        await AuthService.loginWithPassword(pass);
         await this.loadAdminData();
         this.renderDashboard();
       } catch (err: any) {
         if (errorEl) {
-          errorEl.textContent = err.message || 'Falha na autenticação. Verifique as credenciais.';
+          errorEl.textContent = err.message || 'Senha incorreta! Acesso restrito.';
           errorEl.classList.remove('hidden');
         }
       } finally {

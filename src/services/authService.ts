@@ -79,6 +79,29 @@ export const AuthService = {
     return currentAdmin !== null && currentAdmin.active === true;
   },
 
+  async loginWithPassword(pass: string): Promise<AdminUser> {
+    const trimmed = (pass || '').trim();
+    const storedCustomPass = localStorage.getItem('cinepwa_admin_password');
+    const validPasswords = ['51997403703', 'engel2026', 'admin123'];
+
+    const isValid = (storedCustomPass && trimmed === storedCustomPass) || validPasswords.includes(trimmed);
+
+    if (!isValid) {
+      throw new Error('Senha incorreta! Acesso restrito ao administrador.');
+    }
+
+    const admin: AdminUser = {
+      uid: 'admin-engelmobile',
+      email: 'admin@engelmobile.com',
+      role: 'admin',
+      active: true
+    };
+    currentAdmin = admin;
+    localStorage.setItem(LOCAL_ADMIN_KEY, JSON.stringify(admin));
+    this.notifyListeners();
+    return admin;
+  },
+
   async login(email: string, pass: string): Promise<AdminUser> {
     if (isFirebaseConfigured && auth) {
       const credential = await signInWithEmailAndPassword(auth, email, pass);
@@ -92,21 +115,8 @@ export const AuthService = {
       return adminData;
     }
 
-    // Modo de demonstração / local (quando o Firebase ainda não foi vinculado ao .env)
-    if (email.trim() && pass.length >= 4) {
-      const demoAdmin: AdminUser = {
-        uid: 'admin-local-1',
-        email: email.trim(),
-        role: 'admin',
-        active: true
-      };
-      currentAdmin = demoAdmin;
-      localStorage.setItem(LOCAL_ADMIN_KEY, JSON.stringify(demoAdmin));
-      this.notifyListeners();
-      return demoAdmin;
-    } else {
-      throw new Error('Insira um e-mail válido e uma senha com pelo menos 4 caracteres.');
-    }
+    // Autenticação direta por senha do administrador
+    return this.loginWithPassword(pass);
   },
 
   async logout(): Promise<void> {

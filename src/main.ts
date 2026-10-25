@@ -7,6 +7,7 @@ import { renderHeader } from './components/header';
 import { renderHeroBanner } from './components/heroBanner';
 import { renderMovieCard } from './components/movieCard';
 import { adminPanelModal } from './components/adminPanel';
+import { supportModal } from './components/supportModal';
 import { registerPWA } from './pwa';
 
 class CineApp {
@@ -159,6 +160,22 @@ class CineApp {
 
     // 4. Rodapé Informativo & Legal
     this.renderFooter();
+
+    // 5. Botão Flutuante de Informações & Suporte EngelMobile (?)
+    const floatingBtn = document.createElement('button');
+    floatingBtn.className = 'floating-help-btn';
+    floatingBtn.id = 'floating-support-btn';
+    floatingBtn.setAttribute('title', 'EngelMobile Sistemas e Apps personalizados (51) 99740-3703');
+    floatingBtn.setAttribute('aria-label', 'Informações e Suporte EngelMobile');
+    floatingBtn.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+    `;
+    floatingBtn.addEventListener('click', () => supportModal.open());
+    this.appEl.appendChild(floatingBtn);
   }
 
   private getAllCombinedMovies(): Movie[] {
