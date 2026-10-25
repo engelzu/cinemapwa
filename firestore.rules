@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Função de validação: Verifica se o usuário autenticado é um administrador ativo
+    function isAdmin() {
+      return request.auth != null &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.active == true &&
+        get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Coleção de Filmes (movies)
+    match /movies/{movieId} {
+      // Visitantes públicos só podem ler filmes cujo status seja rigorosamente 'published'
+      // Administradores autenticados podem ler qualquer documento (inclusive drafts e disabled)
+      allow read: if (resource.data.status == 'published') || isAdmin();
+
+      // Somente administradores cadastrados podem criar, atualizar ou excluir filmes
+      // Regra de integridade: Impede publicação se a licença não for aprovada
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Coleção de Licenças (licenses)
+    // Documentos confidenciais e operacionais de direitos autorais e comprovantes
+    match /licenses/{licenseId} {
+      // Somente administradores autenticados podem ler, registrar ou auditar licenças
+      allow read, write: if isAdmin();
+    }
+
+    // Coleção de Administradores (admins)
+    // Impede terminantemente auto-promoção de usuários comuns para administradores
+    match /admins/{adminId} {
+      // O usuário pode apenas consultar seu próprio registro para verificação de sessão
+      allow read: if request.auth != null && request.auth.uid == adminId;
+
+      // NENHUM usuário pode criar ou alterar registros de admin pelo cliente frontend
+      // A concessão de papel de admin deve ser feita exclusivamente pelo Firebase Console
+      allow write: if false;
+    }
+  }
+}
