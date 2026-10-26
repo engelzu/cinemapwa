@@ -25,7 +25,7 @@ export interface License {
 
 export type ContentRating = 'L' | '10' | '12' | '14' | '16' | '18';
 export type MovieEra = 'modern' | 'classic';
-export type MovieWorkType = 'longa' | 'curta' | 'animacao' | 'documentario';
+export type MovieWorkType = 'longa' | 'curta' | 'animacao' | 'documentario' | 'anime';
 export type AudioLanguage = 'Dublado' | 'Legendado' | 'Nacional' | 'Sem Diálogo' | 'Original';
 
 export interface Movie {

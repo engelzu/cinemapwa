@@ -26,6 +26,7 @@ const cache = new Map<string, { movies: Movie[]; total: number }>();
 
 // Pôsteres cinematográficos de alta qualidade estilo Netflix por gênero
 const GENRE_POSTERS: Record<string, string> = {
+  'Anime & Mangá': 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=700&q=80',
   'Terror & Suspense': 'https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=700&q=80',
   'Ficção Científica': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=700&q=80',
   'Animação & Fantasia': 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=700&q=80',
@@ -195,6 +196,9 @@ function formatCleanTitle(raw: string): string {
 
 function inferCategory(title: string, desc: string, sub: string): string {
   const t = (title + ' ' + desc + ' ' + sub).toLowerCase();
+  if (t.includes('anime') || t.includes('manga') || t.includes('mangá') || t.includes('dragon ball') || t.includes('street fighter') || t.includes('naruto') || t.includes('zodiaco') || t.includes('seiya') || t.includes('akira') || t.includes('toei') || t.includes('ghibli')) {
+    return 'Anime & Mangá';
+  }
   if (t.includes('horror') || t.includes('terror') || t.includes('vampire') || t.includes('vampiro') || t.includes('monster') || t.includes('monstro') || t.includes('zombie') || t.includes('mortos') || t.includes('dracula') || t.includes('frankenstein')) {
     return 'Terror & Suspense';
   }
@@ -336,7 +340,9 @@ export const ArchiveService = {
 
     if (params.category && params.category !== 'Todos') {
       const cat = params.category.toLowerCase();
-      if (cat.includes('terror')) {
+      if (cat.includes('anime') || cat.includes('mangá') || cat.includes('manga')) {
+        queryParts.push('(subject:(anime OR manga OR animation) OR title:(anime OR manga OR "dragon ball" OR naruto OR "cavaleiros do zodiaco" OR "street fighter" OR akira OR gundam))');
+      } else if (cat.includes('terror')) {
         queryParts.push('(subject:(horror OR terror) OR title:(terror OR horror OR mortos OR vampire OR dracula))');
       } else if (cat.includes('ficção')) {
         queryParts.push('(subject:(scifi OR "science fiction") OR title:(ficção OR space OR planet OR alien OR robot))');

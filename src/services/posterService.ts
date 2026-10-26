@@ -91,6 +91,12 @@ const KNOWN_POSTERS: Record<string, string> = {
 // 2. Pools Diversos de Pôsteres Cinemáticos Verticais de Alta Resolução (Sem Claquete!)
 // Cada categoria possui múltiplos pôsteres distintos para que dois filmes NUNCA compartilhem a mesma imagem.
 const GENRE_POOLS: Record<string, string[]> = {
+  'Anime & Mangá': [
+    'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=700&q=80',
+    'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=700&q=80',
+    'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=700&q=80',
+    'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=700&q=80'
+  ],
   'Terror & Suspense': [
     'https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=700&q=80',
     'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=700&q=80',

@@ -241,6 +241,34 @@ export const INITIAL_LICENSES: License[] = [
     origin: 'Internet Archive - Acervo de Longas Dublados',
     notes: 'Produção moderna de 2023 em 1080p Full HD com dublagem brasileira.',
     verifiedAt: '2026-10-25'
+  },
+  {
+    id: 'lic-streetfighter-1994',
+    movieId: 'mov-streetfighter-1994',
+    rightsHolder: 'Capcom / Group TAC (Acervo Aberto Cultural)',
+    licenseType: 'Outra Autorizada',
+    commercialUseAllowed: false,
+    territory: 'Mundial / Brasil',
+    validUntil: 'Indeterminado',
+    proofUrl: 'https://archive.org/details/street-fighter-ii',
+    reviewStatus: 'approved',
+    origin: 'Internet Archive - Acervo Aberto Internacional',
+    notes: 'Clássico épico do cinema de animação japonesa adaptado dos mangás e videogames, preservado para acesso cultural.',
+    verifiedAt: '2026-10-26'
+  },
+  {
+    id: 'lic-hakujaden-1958',
+    movieId: 'mov-hakujaden-1958',
+    rightsHolder: 'Toei Animation (Domínio Público Internacional / Preservação Histórica)',
+    licenseType: 'Dominio Publico',
+    commercialUseAllowed: false,
+    territory: 'Mundial / Brasil',
+    validUntil: 'Indeterminado',
+    proofUrl: 'https://archive.org/details/480-p-dvdrip-the-white-snake-enchantress-1958whwcyq',
+    reviewStatus: 'approved',
+    origin: 'Internet Archive - Acervo Histórico Cinematográfico',
+    notes: 'Primeiro longa-metragem de animação anime colorida da história do Japão (1958), marco cultural sob domínio público internacional.',
+    verifiedAt: '2026-10-26'
   }
 ];
 
@@ -657,5 +685,55 @@ export const INITIAL_MOVIES: Movie[] = [
     quality: 'HD',
     createdAt: '2026-10-10T10:00:00Z',
     updatedAt: '2026-10-10T10:00:00Z'
+  },
+
+  // ================= ANIMES & MANGÁS =================
+  {
+    id: 'mov-streetfighter-1994',
+    title: 'Street Fighter II: O Filme Animado',
+    originalTitle: 'Street Fighter II: The Animated Movie (1994)',
+    synopsis: 'Bison, o líder da sombria organização terrorista Shadowlaw, busca os lutadores mais fortes do planeta para lavagem cerebral. Enquanto isso, Ryu vaga pelo mundo aperfeiçoando suas técnicas enquanto Ken Masters e Chun-Li tentam deter os planos malignos de Bison. Um dos maiores marcos da animação japonesa em todo o mundo.',
+    posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=700&q=80',
+    backdropUrl: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1600&q=80',
+    category: 'Anime & Mangá',
+    year: 1994,
+    duration: '1h 39m',
+    playbackType: 'embed',
+    playbackUrl: 'https://archive.org/embed/street-fighter-ii',
+    status: 'published',
+    licenseId: 'lic-streetfighter-1994',
+    license: INITIAL_LICENSES.find(l => l.id === 'lic-streetfighter-1994'),
+    featured: false,
+    contentRating: '14',
+    era: 'classic',
+    type: 'anime',
+    audioLanguage: 'Legendado',
+    quality: 'Full HD',
+    createdAt: '2026-10-26T10:00:00Z',
+    updatedAt: '2026-10-26T10:00:00Z'
+  },
+  {
+    id: 'mov-hakujaden-1958',
+    title: 'A Lenda da Serpente Branca',
+    originalTitle: 'Hakujaden (The Tale of the White Serpent - 1958)',
+    synopsis: 'A emocionante história de amor e magia entre um jovem e uma deusa-serpente que assume forma humana. Uma obra histórica pioneira e aclamada mundialmente, sendo o primeiro anime em longa-metragem totalmente colorido lançado pela Toei Animation.',
+    posterUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=700&q=80',
+    backdropUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1600&q=80',
+    category: 'Anime & Mangá',
+    year: 1958,
+    duration: '1h 18m',
+    playbackType: 'embed',
+    playbackUrl: 'https://archive.org/embed/480-p-dvdrip-the-white-snake-enchantress-1958whwcyq',
+    status: 'published',
+    licenseId: 'lic-hakujaden-1958',
+    license: INITIAL_LICENSES.find(l => l.id === 'lic-hakujaden-1958'),
+    featured: false,
+    contentRating: 'L',
+    era: 'classic',
+    type: 'anime',
+    audioLanguage: 'Legendado',
+    quality: 'HD',
+    createdAt: '2026-10-26T10:00:00Z',
+    updatedAt: '2026-10-26T10:00:00Z'
   }
 ];

@@ -218,7 +218,7 @@ class CineApp {
     } else if (this.selectedEraTab === 'classic') {
       list = list.filter(m => m.era === 'classic' || m.year < 2000);
     } else if (this.selectedEraTab === 'animacao') {
-      list = list.filter(m => m.type === 'animacao' || m.category.toLowerCase().includes('animação'));
+      list = list.filter(m => m.type === 'animacao' || m.type === 'anime' || m.category.toLowerCase().includes('animação') || m.category.toLowerCase().includes('anime') || m.category.toLowerCase().includes('mangá'));
     } else if (this.selectedEraTab === 'curta') {
       list = list.filter(m => m.type === 'curta' || (m.duration && !m.duration.includes('h')));
     } else if (this.selectedEraTab === 'longa') {
@@ -339,6 +339,7 @@ class CineApp {
     const CATEGORIES = [
       { id: 'Todos', label: '🎬 Todos os Filmes' },
       { id: 'Dublado', label: '🎙️ Dublados PT-BR' },
+      { id: 'Anime', label: '⛩️ Animes & Mangás' },
       { id: 'Ação', label: '🚀 Ação & Aventura' },
       { id: 'Ficção', label: '👽 Ficção Científica' },
       { id: 'Terror', label: '👻 Terror & Suspense' },
@@ -356,6 +357,7 @@ class CineApp {
       if (catId === 'Dublado') return this.selectedAudio === 'Dublado';
       if (catId === 'Legendado') return this.selectedAudio === 'Legendado';
       if (catId === 'Modernos') return this.selectedEraTab === 'modern';
+      if (catId === 'Anime') return this.selectedCategory.toLowerCase().includes('anime') || this.selectedCategory.toLowerCase().includes('mangá');
       return this.selectedCategory.toLowerCase().includes(catId.toLowerCase());
     };
 
@@ -384,6 +386,10 @@ class CineApp {
           this.selectedEraTab = 'modern';
           this.selectedCategory = 'Todos';
           this.selectedAudio = 'all';
+        } else if (catId === 'Anime') {
+          this.selectedCategory = 'Anime & Mangá';
+          this.selectedAudio = 'all';
+          this.selectedEraTab = 'all';
         } else {
           this.selectedCategory = catId;
           this.selectedAudio = 'all';
@@ -515,6 +521,7 @@ class CineApp {
       if (this.selectedAudio === 'Dublado') sectionTitle = '🎙️ Filmes 100% Dublados em Português';
       else if (this.selectedAudio === 'Legendado') sectionTitle = '💬 Filmes com Legendas em Português';
       else if (this.selectedEraTab === 'modern') sectionTitle = '🌟 Lançamentos & Produções Modernas (2020-2026)';
+      else if (this.selectedCategory.toLowerCase().includes('anime')) sectionTitle = '⛩️ Animes, Mangás & Animações Japonesas';
       else if (this.selectedCategory !== 'Todos') sectionTitle = `Filmes de ${this.selectedCategory}`;
 
       section.innerHTML = `
@@ -594,8 +601,15 @@ class CineApp {
       return c.includes('documentário');
     });
 
+    const animeMovies = allFiltered.filter(m => {
+      const c = (m.category || '').toLowerCase();
+      const t = (m.title + ' ' + m.synopsis).toLowerCase();
+      return m.type === 'anime' || c.includes('anime') || c.includes('mangá') || c.includes('manga') || t.includes('anime') || t.includes('mangá');
+    });
+
     const categorySections = [
       { id: 'grid-modernos', title: '🌟 Lançamentos & Cinema Moderno (2020-2026)', catFilter: 'Modernos', movies: modernMovies },
+      { id: 'grid-animes', title: '⛩️ Animes & Mangás', catFilter: 'Anime', movies: animeMovies },
       { id: 'grid-dublados', title: '🎙️ Filmes 100% Dublados em Português', catFilter: 'Dublado', movies: dubbedMovies },
       { id: 'grid-acao', title: '🚀 Ação, Aventura & Ficção Científica', catFilter: 'Ação', movies: acaoFiccaoMovies },
       { id: 'grid-terror', title: '👻 Terror, Suspense & Sobrenatural', catFilter: 'Terror', movies: terrorMovies },

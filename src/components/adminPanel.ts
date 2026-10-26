@@ -497,8 +497,10 @@ export class AdminPanelModal {
               <div class="form-group">
                 <label for="f-category">Categoria / Gênero *</label>
                 <select id="f-category" class="form-input" required>
+                  <option value="Anime & Mangá" ${movie?.category === 'Anime & Mangá' ? 'selected' : ''}>⛩️ Anime & Mangá</option>
                   <option value="Terror & Suspense" ${movie?.category === 'Terror & Suspense' ? 'selected' : ''}>Terror & Suspense</option>
                   <option value="Ficção Científica" ${movie?.category === 'Ficção Científica' ? 'selected' : ''}>Ficção Científica</option>
+                  <option value="Ação & Aventura" ${movie?.category === 'Ação & Aventura' ? 'selected' : ''}>Ação & Aventura</option>
                   <option value="Clássicos & Mistério" ${movie?.category === 'Clássicos & Mistério' ? 'selected' : ''}>Clássicos & Mistério</option>
                   <option value="Comédia & Drama" ${movie?.category === 'Comédia & Drama' ? 'selected' : ''}>Comédia & Drama</option>
                   <option value="Documentário" ${movie?.category === 'Documentário' ? 'selected' : ''}>Documentário</option>
