@@ -327,8 +327,16 @@ export const ArchiveService = {
     ];
 
     if (params.searchQuery && params.searchQuery.trim()) {
-      const q = params.searchQuery.trim().replace(/['"():]/g, '');
-      queryParts.push(`(title:(${q}*) OR description:(${q}*))`);
+      const cleanQ = params.searchQuery.trim().replace(/['"():\[\]{}*?]/g, ' ').replace(/\s+/g, ' ').trim();
+      const words = cleanQ.split(' ').filter(w => w.length > 0);
+      if (words.length === 1) {
+        const w = words[0];
+        queryParts.push(`(title:(${w}* OR *${w}*) OR description:(${w}*))`);
+      } else if (words.length > 1) {
+        const titleQuery = words.map(w => `title:(${w}*)`).join(' AND ');
+        const descQuery = words.map(w => `description:(${w}*)`).join(' AND ');
+        queryParts.push(`((${titleQuery}) OR (${descQuery}))`);
+      }
     } else {
       // Priorizar obras estritamente acessíveis ao público brasileiro (Dublado / Legendado / Nacional)
       if (params.audioLanguage === 'Dublado') {

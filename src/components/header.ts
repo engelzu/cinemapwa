@@ -132,7 +132,7 @@ export function renderHeader(callbacks: HeaderCallbacks): HTMLElement {
   const searchInput = header.querySelector('#global-search-input') as HTMLInputElement;
   const searchClear = header.querySelector('#search-clear-btn') as HTMLButtonElement;
 
-  searchInput?.addEventListener('input', () => {
+  const triggerSearch = () => {
     const val = searchInput.value;
     if (val.trim()) {
       searchClear.classList.remove('hidden');
@@ -140,6 +140,14 @@ export function renderHeader(callbacks: HeaderCallbacks): HTMLElement {
       searchClear.classList.add('hidden');
     }
     callbacks.onSearch(val);
+  };
+
+  searchInput?.addEventListener('input', triggerSearch);
+  searchInput?.addEventListener('search', triggerSearch);
+  searchInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      searchInput.blur();
+    }
   });
 
   searchClear?.addEventListener('click', () => {

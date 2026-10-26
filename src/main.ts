@@ -9,6 +9,7 @@ import { renderMovieCard } from './components/movieCard';
 import { adminPanelModal } from './components/adminPanel';
 import { supportModal } from './components/supportModal';
 import { registerPWA } from './pwa';
+import { matchesSearchQuery, buildMovieSearchIndex, normalizeSearch } from './utils/search';
 
 class CineApp {
   private appEl: HTMLElement;
@@ -19,6 +20,8 @@ class CineApp {
   private isLoadingLive: boolean = false;
 
   private searchQuery: string = '';
+  private searchDebounceTimer: any = null;
+  private searchSeq: number = 0;
   private selectedCategory: string = 'Todos';
   private selectedEraTab: string = 'all'; // 'all', 'modern', 'classic', 'animacao', 'curta', 'longa'
   private selectedRating: string = 'all'; // 'all', 'L', '10', '12', '14', '16'
@@ -102,13 +105,68 @@ class CineApp {
 
     // 1. Cabeçalho Principal
     const header = renderHeader({
-      onSearch: async (q) => {
-        this.searchQuery = q.trim();
+      onSearch: (q) => {
+        const query = q.trim();
+        this.searchQuery = query;
         this.viewingFavoritesOnly = false;
-        this.liveArchiveMovies = [];
-        this.currentLivePage = 1;
+
+        // Ocultar / exibir o hero banner dinamicamente durante a busca
+        const heroEl = document.getElementById('hero-featured-banner');
+        if (heroEl) {
+          heroEl.style.display = query ? 'none' : '';
+        }
+
+        // 1. FILTRO INSTANTÂNEO ZERO-DELAY (0ms):
+        // Exibe na mesma hora qualquer obra local/já carregada que coincida com as letras digitadas
         this.renderCatalogView();
-        await this.fetchLivePage(1, false);
+
+        // 2. Cancelar timer de busca anterior se continuar digitando
+        if (this.searchDebounceTimer) {
+          clearTimeout(this.searchDebounceTimer);
+        }
+
+        // Se o campo foi esvaziado, restaura catálogo padrão
+        if (!query) {
+          this.liveArchiveMovies = [];
+          this.currentLivePage = 1;
+          this.renderCatalogView();
+          return;
+        }
+
+        // 3. BUSCA COMPLEMENTAR NO ACERVO ONLINE COM DEBOUNCE (300ms) PARA 3+ LETRAS
+        const thisSeq = ++this.searchSeq;
+        if (query.length >= 3) {
+          this.searchDebounceTimer = setTimeout(async () => {
+            this.isLoadingLive = true;
+            this.updateLoadMoreButtonState();
+            try {
+              const res = await ArchiveService.fetchLiveCatalog({
+                searchQuery: query,
+                page: 1,
+                rows: 50,
+                sort: this.sortBy
+              });
+
+              // Descartar requisição se o usuário já digitou algo mais novo
+              if (thisSeq !== this.searchSeq) return;
+
+              this.currentLivePage = 1;
+              this.totalLiveFound = res.total;
+              const newMovies = res.movies.filter(
+                rm => !this.localMovies.some(lm => lm.id === rm.id || lm.playbackUrl === rm.playbackUrl)
+              );
+              this.liveArchiveMovies = newMovies;
+              this.renderCatalogView();
+            } catch (err) {
+              console.warn('Erro na busca online do acervo:', err);
+            } finally {
+              if (thisSeq === this.searchSeq) {
+                this.isLoadingLive = false;
+                this.updateLoadMoreButtonState();
+              }
+            }
+          }, 300);
+        }
       },
       onFilterCategory: async (cat) => {
         this.selectedCategory = cat;
@@ -127,7 +185,15 @@ class CineApp {
         adminPanelModal.open();
       },
       onNavigateHome: async () => {
+        if (this.searchDebounceTimer) clearTimeout(this.searchDebounceTimer);
         this.searchQuery = '';
+        const searchInput = document.getElementById('global-search-input') as HTMLInputElement | null;
+        if (searchInput) searchInput.value = '';
+        const searchClear = document.getElementById('search-clear-btn');
+        if (searchClear) searchClear.classList.add('hidden');
+        const heroEl = document.getElementById('hero-featured-banner');
+        if (heroEl) heroEl.style.display = '';
+
         this.selectedCategory = 'Todos';
         this.selectedEraTab = 'all';
         this.selectedRating = 'all';
@@ -189,16 +255,27 @@ class CineApp {
 
     let list = Array.from(uniqueMap.values());
 
-    // Filtro de Busca
+    // 1. MODO DE BUSCA ATIVO: Filtragem instantânea resiliente a acentos e 4 letras
     if (this.searchQuery) {
-      const q = this.searchQuery.toLowerCase();
-      list = list.filter(m =>
-        m.title.toLowerCase().includes(q) ||
-        (m.originalTitle && m.originalTitle.toLowerCase().includes(q)) ||
-        m.synopsis.toLowerCase().includes(q) ||
-        m.category.toLowerCase().includes(q) ||
-        String(m.year).includes(q)
-      );
+      const q = this.searchQuery;
+      list = list.filter(m => {
+        const searchable = buildMovieSearchIndex(m);
+        return matchesSearchQuery(searchable, q);
+      });
+
+      // Ordenação inteligente por relevância (os que começam ou contêm o termo no título aparecem primeiro)
+      const normQ = normalizeSearch(q);
+      list.sort((a, b) => {
+        const aTitle = normalizeSearch(a.title);
+        const bTitle = normalizeSearch(b.title);
+        const aStarts = aTitle.startsWith(normQ) || aTitle.includes(' ' + normQ);
+        const bStarts = bTitle.startsWith(normQ) || bTitle.includes(' ' + normQ);
+        if (aStarts && !bStarts) return -1;
+        if (!aStarts && bStarts) return 1;
+        return b.year - a.year;
+      });
+
+      return list;
     }
 
     // Filtro de Favoritos
@@ -273,9 +350,14 @@ class CineApp {
       `;
 
       container.querySelector('#btn-cancel-search')?.addEventListener('click', () => {
+        if (this.searchDebounceTimer) clearTimeout(this.searchDebounceTimer);
         this.searchQuery = '';
         const searchInput = document.getElementById('global-search-input') as HTMLInputElement | null;
         if (searchInput) searchInput.value = '';
+        const searchClear = document.getElementById('search-clear-btn');
+        if (searchClear) searchClear.classList.add('hidden');
+        const heroEl = document.getElementById('hero-featured-banner');
+        if (heroEl) heroEl.style.display = '';
         this.renderCatalogView();
       });
 
@@ -283,8 +365,15 @@ class CineApp {
       if (filtered.length === 0 && !this.isLoadingLive) {
         grid.innerHTML = `
           <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted);">
-            <p style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 8px;">Nenhum título em português encontrado para "${this.searchQuery}"</p>
-            <p>Tente buscar por termos como "Dublado", "Mortos Vivos", "Dracula", "Chaplin" ou "História".</p>
+            <p style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 8px;">Nenhum título encontrado para "${this.searchQuery}"</p>
+            <p>Tente buscar por termos como "Jurassic", "Fighter", "Sherlock", "Animes", "Mortos" ou "Chaplin".</p>
+          </div>
+        `;
+      } else if (filtered.length === 0 && this.isLoadingLive) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted);">
+            <p style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 8px;">Buscando "${this.searchQuery}" no acervo...</p>
+            <p>Conectando ao catálogo de filmes e séries autorizadas.</p>
           </div>
         `;
       } else {
