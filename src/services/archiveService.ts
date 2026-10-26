@@ -26,6 +26,7 @@ const cache = new Map<string, { movies: Movie[]; total: number }>();
 
 // Pôsteres cinematográficos de alta qualidade estilo Netflix por gênero
 const GENRE_POSTERS: Record<string, string> = {
+  'Séries & Minisséries': 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=700&q=80',
   'Anime & Mangá': 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=700&q=80',
   'Terror & Suspense': 'https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=700&q=80',
   'Ficção Científica': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=700&q=80',
@@ -196,6 +197,9 @@ function formatCleanTitle(raw: string): string {
 
 function inferCategory(title: string, desc: string, sub: string): string {
   const t = (title + ' ' + desc + ' ' + sub).toLowerCase();
+  if (t.includes('serie') || t.includes('série') || t.includes('season') || t.includes('temporada') || t.includes('episódio') || t.includes('episodio') || t.includes('sherlock holmes') || t.includes('g-force')) {
+    return 'Séries & Minisséries';
+  }
   if (t.includes('anime') || t.includes('manga') || t.includes('mangá') || t.includes('dragon ball') || t.includes('street fighter') || t.includes('naruto') || t.includes('zodiaco') || t.includes('seiya') || t.includes('akira') || t.includes('toei') || t.includes('ghibli')) {
     return 'Anime & Mangá';
   }
@@ -340,7 +344,9 @@ export const ArchiveService = {
 
     if (params.category && params.category !== 'Todos') {
       const cat = params.category.toLowerCase();
-      if (cat.includes('anime') || cat.includes('mangá') || cat.includes('manga')) {
+      if (cat.includes('série') || cat.includes('serie') || cat.includes('temporada') || cat.includes('tv')) {
+        queryParts.push('(subject:(series OR television OR tv OR episodic) OR title:(série OR serie OR temporada OR "ep 01" OR "episodio"))');
+      } else if (cat.includes('anime') || cat.includes('mangá') || cat.includes('manga')) {
         queryParts.push('(subject:(anime OR manga OR animation) OR title:(anime OR manga OR "dragon ball" OR naruto OR "cavaleiros do zodiaco" OR "street fighter" OR akira OR gundam))');
       } else if (cat.includes('terror')) {
         queryParts.push('(subject:(horror OR terror) OR title:(terror OR horror OR mortos OR vampire OR dracula))');
