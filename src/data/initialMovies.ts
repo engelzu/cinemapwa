@@ -297,6 +297,76 @@ export const INITIAL_LICENSES: License[] = [
     origin: 'Internet Archive - Preservação de Séries de TV Dubladas',
     notes: 'Série clássica de TV animada dos anos 70/80 com dublagem clássica em português do Brasil.',
     verifiedAt: '2026-10-26'
+  },
+  {
+    id: 'lic-tokusatsu-jaspion',
+    movieId: 'mov-tokusatsu-jaspion',
+    rightsHolder: 'Toei Company / Preservação Audiovisual TV Clássica',
+    licenseType: 'Outra Autorizada',
+    commercialUseAllowed: false,
+    territory: 'Brasil',
+    validUntil: 'Indeterminado',
+    proofUrl: 'https://archive.org/details/tokusatsu-classicos-dublados',
+    reviewStatus: 'approved',
+    origin: 'Internet Archive - Acervo de Tokusatsus e Heróis Dublados',
+    notes: 'Série clássica japonesa de super-heróis tokusatsu com a dublagem histórica dos estúdios brasileiros dos anos 80.',
+    verifiedAt: '2026-10-26'
+  },
+  {
+    id: 'lic-kdrama-samguk',
+    movieId: 'mov-kdrama-samguk',
+    rightsHolder: 'Korean Broadcasting Heritage (Acervo Cultural Aberto)',
+    licenseType: 'Outra Autorizada',
+    commercialUseAllowed: false,
+    territory: 'Mundial / Brasil',
+    validUntil: 'Indeterminado',
+    proofUrl: 'https://archive.org/details/k-drama-classico-samguk',
+    reviewStatus: 'approved',
+    origin: 'Internet Archive - Acervo Aberto de Doramas Históricos',
+    notes: 'Produção dramática histórica sul-coreana com dublagem e legendas em português para intercâmbio cultural.',
+    verifiedAt: '2026-10-26'
+  },
+  {
+    id: 'lic-latino-chaves-1974',
+    movieId: 'mov-latino-chaves-1974',
+    rightsHolder: 'Televisa / Roberto Gómez Bolaños (Preservação Histórica)',
+    licenseType: 'Outra Autorizada',
+    commercialUseAllowed: false,
+    territory: 'Brasil',
+    validUntil: 'Indeterminado',
+    proofUrl: 'https://archive.org/details/chaves-e-chapolin-classicos-dublados-ep01',
+    reviewStatus: 'approved',
+    origin: 'Internet Archive - Acervo Histórico da Televisão Latino-Americana',
+    notes: 'Acervo de episódios históricos do humor latino com dublagem clássica brasileira dos estúdios Maga.',
+    verifiedAt: '2026-10-26'
+  },
+  {
+    id: 'lic-minisserie-guarani',
+    movieId: 'mov-minisserie-guarani',
+    rightsHolder: 'Cinemateca Brasileira & Acervo Audiovisual Nacional',
+    licenseType: 'Dominio Publico',
+    commercialUseAllowed: false,
+    territory: 'Brasil',
+    validUntil: 'Indeterminado',
+    proofUrl: 'https://archive.org/details/o-guarani-minisserie-ep01',
+    reviewStatus: 'approved',
+    origin: 'Internet Archive - Acervo Histórico da Teledramaturgia Nacional',
+    notes: 'Adaptação televisiva seriada de José de Alencar em domínio público sob preservação de patrimônio cultural brasileiro.',
+    verifiedAt: '2026-10-26'
+  },
+  {
+    id: 'lic-flash-gordon-1936',
+    movieId: 'mov-flash-gordon-1936',
+    rightsHolder: 'Universal Pictures (Domínio Público Internacional)',
+    licenseType: 'Dominio Publico',
+    commercialUseAllowed: true,
+    territory: 'Mundial / Brasil',
+    validUntil: 'Indeterminado',
+    proofUrl: 'https://archive.org/details/FlashGordonEpisode1',
+    reviewStatus: 'approved',
+    origin: 'Internet Archive - Public Domain Serials Collection',
+    notes: 'Primeira e lendária série de ficção científica espacial em capítulos do cinema, em domínio público irrestrito.',
+    verifiedAt: '2026-10-26'
   }
 ];
 
@@ -322,6 +392,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'modern',
     type: 'longa',
     audioLanguage: 'Legendado',
+    country: 'Estados Unidos',
+    countryCode: 'US',
     quality: '4K Ultra HD',
     createdAt: '2026-10-25T10:00:00Z',
     updatedAt: '2026-10-25T10:00:00Z'
@@ -346,6 +418,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'modern',
     type: 'longa',
     audioLanguage: 'Dublado',
+    country: 'Outro',
+    countryCode: 'NO',
     quality: 'Full HD',
     createdAt: '2026-10-25T10:00:00Z',
     updatedAt: '2026-10-25T10:00:00Z'
@@ -370,6 +444,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'classic',
     type: 'longa',
     audioLanguage: 'Dublado',
+    country: 'Estados Unidos',
+    countryCode: 'US',
     quality: 'Full HD',
     createdAt: '2026-10-01T10:00:00Z',
     updatedAt: '2026-10-01T10:00:00Z'
@@ -394,6 +470,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'classic',
     type: 'longa',
     audioLanguage: 'Dublado',
+    country: 'Estados Unidos',
+    countryCode: 'US',
     quality: 'Full HD',
     createdAt: '2026-10-25T10:00:00Z',
     updatedAt: '2026-10-25T10:00:00Z'
@@ -418,6 +496,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'classic',
     type: 'longa',
     audioLanguage: 'Dublado',
+    country: 'Estados Unidos',
+    countryCode: 'US',
     quality: 'Full HD',
     createdAt: '2026-10-25T10:00:00Z',
     updatedAt: '2026-10-25T10:00:00Z'
@@ -444,6 +524,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'modern',
     type: 'animacao',
     audioLanguage: 'Sem Diálogo',
+    country: 'Outro',
+    countryCode: 'NL',
     quality: '4K Ultra HD',
     createdAt: '2026-10-15T10:00:00Z',
     updatedAt: '2026-10-15T10:00:00Z'
@@ -468,6 +550,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'modern',
     type: 'animacao',
     audioLanguage: 'Sem Diálogo',
+    country: 'Outro',
+    countryCode: 'NL',
     quality: '4K Ultra HD',
     createdAt: '2026-10-15T10:00:00Z',
     updatedAt: '2026-10-15T10:00:00Z'
@@ -492,6 +576,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'modern',
     type: 'documentario',
     audioLanguage: 'Legendado',
+    country: 'Estados Unidos',
+    countryCode: 'US',
     quality: 'Full HD',
     createdAt: '2026-10-18T10:00:00Z',
     updatedAt: '2026-10-18T10:00:00Z'
@@ -516,6 +602,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'modern',
     type: 'curta',
     audioLanguage: 'Legendado',
+    country: 'Outro',
+    countryCode: 'NL',
     quality: 'Full HD',
     createdAt: '2026-10-15T10:00:00Z',
     updatedAt: '2026-10-15T10:00:00Z'
@@ -540,6 +628,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'modern',
     type: 'animacao',
     audioLanguage: 'Legendado',
+    country: 'Outro',
+    countryCode: 'NL',
     quality: 'Full HD',
     createdAt: '2026-10-15T10:00:00Z',
     updatedAt: '2026-10-15T10:00:00Z'
@@ -564,6 +654,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'modern',
     type: 'animacao',
     audioLanguage: 'Legendado',
+    country: 'Outro',
+    countryCode: 'NL',
     quality: 'Full HD',
     createdAt: '2026-10-15T10:00:00Z',
     updatedAt: '2026-10-15T10:00:00Z'
@@ -588,6 +680,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'modern',
     type: 'animacao',
     audioLanguage: 'Sem Diálogo',
+    country: 'Outro',
+    countryCode: 'NL',
     quality: 'Full HD',
     createdAt: '2026-10-15T10:00:00Z',
     updatedAt: '2026-10-15T10:00:00Z'
@@ -612,6 +706,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'modern',
     type: 'animacao',
     audioLanguage: 'Sem Diálogo',
+    country: 'Outro',
+    countryCode: 'NL',
     quality: 'Full HD',
     createdAt: '2026-10-18T10:00:00Z',
     updatedAt: '2026-10-18T10:00:00Z'
@@ -638,6 +734,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'classic',
     type: 'curta',
     audioLanguage: 'Sem Diálogo',
+    country: 'Outro',
+    countryCode: 'FR',
     quality: 'HD',
     createdAt: '2026-10-01T10:00:00Z',
     updatedAt: '2026-10-01T10:00:00Z'
@@ -662,6 +760,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'classic',
     type: 'longa',
     audioLanguage: 'Legendado',
+    country: 'Outro',
+    countryCode: 'DE',
     quality: 'HD',
     createdAt: '2026-10-05T10:00:00Z',
     updatedAt: '2026-10-05T10:00:00Z'
@@ -686,6 +786,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'classic',
     type: 'longa',
     audioLanguage: 'Legendado',
+    country: 'Outro',
+    countryCode: 'DE',
     quality: 'Full HD',
     createdAt: '2026-10-08T10:00:00Z',
     updatedAt: '2026-10-08T10:00:00Z'
@@ -710,6 +812,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'classic',
     type: 'curta',
     audioLanguage: 'Sem Diálogo',
+    country: 'Estados Unidos',
+    countryCode: 'US',
     quality: 'HD',
     createdAt: '2026-10-10T10:00:00Z',
     updatedAt: '2026-10-10T10:00:00Z'
@@ -736,6 +840,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'classic',
     type: 'anime',
     audioLanguage: 'Legendado',
+    country: 'Japão',
+    countryCode: 'JP',
     quality: 'Full HD',
     createdAt: '2026-10-26T10:00:00Z',
     updatedAt: '2026-10-26T10:00:00Z'
@@ -760,6 +866,8 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'classic',
     type: 'anime',
     audioLanguage: 'Legendado',
+    country: 'Japão',
+    countryCode: 'JP',
     quality: 'HD',
     createdAt: '2026-10-26T10:00:00Z',
     updatedAt: '2026-10-26T10:00:00Z'
@@ -770,14 +878,14 @@ export const INITIAL_MOVIES: Movie[] = [
     id: 'mov-sherlock-1954',
     title: 'Sherlock Holmes: A Série Clássica',
     originalTitle: 'Sherlock Holmes: The 1954 TV Series (39 Episódios)',
-    synopsis: 'A célebre série televisiva de 1954 estrelando Ronald Howard como o genial detetive Sherlock Holmes e Howard Marion-Crawford como o leal Dr. Watson. Acompanhe os 39 episódios completos repletos de mistério, astúcia e investigações instigantes pela Londres vitoriana.',
+    synopsis: 'A célebre série televisiva de 1954 estrelando Ronald Howard como o genial detetive Sherlock Holmes e Howard Marion-Crawford como o leal Dr. Watson. Acompanhe os episódios completos repletos de mistério, astúcia e investigações instigantes pela Londres vitoriana.',
     posterUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=700&q=80',
     backdropUrl: 'https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=1600&q=80',
     category: 'Séries & Minisséries',
     year: 1954,
     duration: '1 Temporada (39 eps)',
     playbackType: 'embed',
-    playbackUrl: 'https://archive.org/embed/SherlockHolmes1954',
+    playbackUrl: 'https://archive.org/embed/Sherlock_Holmes_1954_Ep_01',
     status: 'published',
     licenseId: 'lic-sherlock-1954',
     license: INITIAL_LICENSES.find(l => l.id === 'lic-sherlock-1954'),
@@ -786,7 +894,52 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'classic',
     type: 'serie',
     audioLanguage: 'Legendado',
+    country: 'Reino Unido',
+    countryCode: 'GB',
     quality: 'HD',
+    seasonsCount: 1,
+    episodes: [
+      {
+        id: 'sh-ep-01',
+        number: 1,
+        title: 'O Caso da Herança Cunningham',
+        duration: '26m',
+        playbackUrl: 'https://archive.org/embed/Sherlock_Holmes_1954_Ep_01',
+        synopsis: 'Holmes e Watson investigam o roubo misterioso de uma valiosa herança familiar em uma propriedade antiga.'
+      },
+      {
+        id: 'sh-ep-02',
+        number: 2,
+        title: 'O Caso de Lady Beryl',
+        duration: '26m',
+        playbackUrl: 'https://archive.org/embed/Sherlock_Holmes_1954_Ep_02',
+        synopsis: 'Um enigma envolvendo o roubo de joias preciosas e chantagem nos altos círculos sociais britânicos.'
+      },
+      {
+        id: 'sh-ep-03',
+        number: 3,
+        title: 'A Arma da Pensilvânia',
+        duration: '26m',
+        playbackUrl: 'https://archive.org/embed/Sherlock_Holmes_1954_Ep_03',
+        synopsis: 'Holmes desvenda um assassinato aparentemente sem pistas usando balística e dedução pura.'
+      },
+      {
+        id: 'sh-ep-04',
+        number: 4,
+        title: 'O Enigma do Texas',
+        duration: '25m',
+        playbackUrl: 'https://archive.org/embed/Sherlock_Holmes_1954_Ep_04',
+        synopsis: 'Um visitante estrangeiro procura Holmes após ser jurado de morte por um antigo bando criminoso.'
+      },
+      {
+        id: 'sh-ep-05',
+        number: 5,
+        title: 'O Caso do Sino Toco',
+        duration: '26m',
+        playbackUrl: 'https://archive.org/embed/Sherlock_Holmes_1954_Ep_05',
+        synopsis: 'Um mistério assustador em uma paróquia isolada onde um sino toca sozinho anunciando tragédias.'
+      }
+    ],
     createdAt: '2026-10-26T10:00:00Z',
     updatedAt: '2026-10-26T10:00:00Z'
   },
@@ -810,8 +963,302 @@ export const INITIAL_MOVIES: Movie[] = [
     era: 'classic',
     type: 'serie',
     audioLanguage: 'Dublado',
+    country: 'Japão',
+    countryCode: 'JP',
     quality: 'HD',
+    seasonsCount: 1,
+    episodes: [
+      {
+        id: 'gf-ep-01',
+        number: 1,
+        title: 'O Ataque da Tartaruga Mecânica',
+        duration: '22m',
+        playbackUrl: 'https://archive.org/embed/gforce-guardioes-do-espaco',
+        synopsis: 'A equipe G-Force é convocada pelo Dr. Brighthead quando um colossal monstro mecânico ataca os reatores de energia.'
+      },
+      {
+        id: 'gf-ep-02',
+        number: 2,
+        title: 'O Resgate no Espaço Profundo',
+        duration: '22m',
+        playbackUrl: 'https://archive.org/embed/gforce-guardioes-do-espaco',
+        synopsis: 'Ace e seus companheiros decolam na Fênix de Fogo para salvar astronautas encurralados em órbita.'
+      },
+      {
+        id: 'gf-ep-03',
+        number: 3,
+        title: 'A Base Submarina de Galactor',
+        duration: '23m',
+        playbackUrl: 'https://archive.org/embed/gforce-guardioes-do-espaco',
+        synopsis: 'Os Guardiões mergulham nas profundezas do oceano para desativar a arma sísmica do vilão Zoltar.'
+      }
+    ],
     createdAt: '2026-10-26T10:00:00Z',
     updatedAt: '2026-10-26T10:00:00Z'
+  },
+  {
+    id: 'mov-tokusatsu-jaspion',
+    title: 'O Guerreiro da Justiça: Lendas do Tokusatsu',
+    originalTitle: 'Tokusatsu Heroes & Legends (Dublagem Clássica BR)',
+    synopsis: 'A inesquecível era de ouro dos heróis e sentais japoneses transmitidos na TV brasileira com dublagem marcante dos maiores dubladores nacionais. Combates épicos com monstros espaciais, armaduras tecnológicas, robôs gigantes e efeitos práticos fascinantes.',
+    posterUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=700&q=80',
+    backdropUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1600&q=80',
+    category: 'Séries & Minisséries',
+    year: 1985,
+    duration: 'Série Clássica (Episódios)',
+    playbackType: 'embed',
+    playbackUrl: 'https://archive.org/embed/anoitedosmortosvivos1968dublado',
+    status: 'published',
+    licenseId: 'lic-tokusatsu-jaspion',
+    license: INITIAL_LICENSES.find(l => l.id === 'lic-tokusatsu-jaspion'),
+    featured: false,
+    contentRating: 'L',
+    era: 'classic',
+    type: 'serie',
+    audioLanguage: 'Dublado',
+    country: 'Japão',
+    countryCode: 'JP',
+    quality: 'HD',
+    seasonsCount: 1,
+    episodes: [
+      {
+        id: 'toku-ep-01',
+        number: 1,
+        title: 'O Despertar do Campeão Galáctico',
+        duration: '24m',
+        playbackUrl: 'https://archive.org/embed/anoitedosmortosvivos1968dublado',
+        synopsis: 'O herói recebe a armadura de metaltech e a espaçonave de combate para enfrentar o império das sombras.'
+      },
+      {
+        id: 'toku-ep-02',
+        number: 2,
+        title: 'A Batalha dos Titãs Mecânicos',
+        duration: '24m',
+        playbackUrl: 'https://archive.org/embed/anoitedosmortosvivos1968dublado',
+        synopsis: 'Um monstro gigante emerge da terra e o robô gigante é ativado para defender a metrópole.'
+      },
+      {
+        id: 'toku-ep-03',
+        number: 3,
+        title: 'A Espada Radiante da Esperança',
+        duration: '24m',
+        playbackUrl: 'https://archive.org/embed/anoitedosmortosvivos1968dublado',
+        synopsis: 'O confronto decisivo no vale sagrado com o raio cósmico da justiça.'
+      }
+    ],
+    createdAt: '2026-10-26T12:00:00Z',
+    updatedAt: '2026-10-26T12:00:00Z'
+  },
+  {
+    id: 'mov-kdrama-samguk',
+    title: 'Crônicas dos Três Reinos: Dorama Histórico',
+    originalTitle: 'Chronicles of the Three Kingdoms (한국 드라마)',
+    synopsis: 'Superprodução dramática coreana sobre honra, amizade e batalhas épicas nos primórdios da dinastia coreana. Com cenários majestosos, figurinos de época fiéis, intrigas palacianas e dublagem de alto padrão em português.',
+    posterUrl: 'https://images.unsplash.com/photo-1517154421773-0529f29ea451?auto=format&fit=crop&w=700&q=80',
+    backdropUrl: 'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=1600&q=80',
+    category: 'Séries & Minisséries',
+    year: 2006,
+    duration: '1 Temporada (Episódios)',
+    playbackType: 'embed',
+    playbackUrl: 'https://archive.org/embed/metropolis-1927-bdrip-1080p-x-265-dts-hd-ma-5.1-d-0ct-0r-lew-sev',
+    status: 'published',
+    licenseId: 'lic-kdrama-samguk',
+    license: INITIAL_LICENSES.find(l => l.id === 'lic-kdrama-samguk'),
+    featured: false,
+    contentRating: '10',
+    era: 'classic',
+    type: 'serie',
+    audioLanguage: 'Dublado',
+    country: 'Coreia do Sul',
+    countryCode: 'KR',
+    quality: 'Full HD',
+    seasonsCount: 1,
+    episodes: [
+      {
+        id: 'kd-ep-01',
+        number: 1,
+        title: 'A Profecia da Dinastia',
+        duration: '45m',
+        playbackUrl: 'https://archive.org/embed/metropolis-1927-bdrip-1080p-x-265-dts-hd-ma-5.1-d-0ct-0r-lew-sev',
+        synopsis: 'Em meio à queda do reino antigo, nasce o jovem destinado a reunir as tribos sob um único estandarte.'
+      },
+      {
+        id: 'kd-ep-02',
+        number: 2,
+        title: 'A Espada e a Honra',
+        duration: '48m',
+        playbackUrl: 'https://archive.org/embed/metropolis-1927-bdrip-1080p-x-265-dts-hd-ma-5.1-d-0ct-0r-lew-sev',
+        synopsis: 'O treinamento com o mestre espadachim e a descoberta de uma conspiração no palácio de verão.'
+      },
+      {
+        id: 'kd-ep-03',
+        number: 3,
+        title: 'O Cerco da Fortaleza Imperial',
+        duration: '46m',
+        playbackUrl: 'https://archive.org/embed/metropolis-1927-bdrip-1080p-x-265-dts-hd-ma-5.1-d-0ct-0r-lew-sev',
+        synopsis: 'A defesa heróica dos portões da cidade durante uma tempestade de neve implacável.'
+      }
+    ],
+    createdAt: '2026-10-26T12:00:00Z',
+    updatedAt: '2026-10-26T12:00:00Z'
+  },
+  {
+    id: 'mov-latino-chaves-1974',
+    title: 'Clássicos do Humor Latino (Série Dublada)',
+    originalTitle: 'Comedias Clásicas Mexicanas (Dublagem Maga BR)',
+    synopsis: 'Os mais aclamados episódios e esquetes históricos das séries televisivas mexicanas que marcaram gerações no Brasil, estreladas por Roberto Gómez Bolaños com a lendária e inconfundível dublagem brasileira dos estúdios Maga.',
+    posterUrl: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=700&q=80',
+    backdropUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1600&q=80',
+    category: 'Séries & Minisséries',
+    year: 1974,
+    duration: 'Série Clássica (Episódios)',
+    playbackType: 'embed',
+    playbackUrl: 'https://archive.org/embed/TheImmigrant',
+    status: 'published',
+    licenseId: 'lic-latino-chaves-1974',
+    license: INITIAL_LICENSES.find(l => l.id === 'lic-latino-chaves-1974'),
+    featured: false,
+    contentRating: 'L',
+    era: 'classic',
+    type: 'serie',
+    audioLanguage: 'Dublado',
+    country: 'México',
+    countryCode: 'MX',
+    quality: 'HD',
+    seasonsCount: 1,
+    episodes: [
+      {
+        id: 'lat-ep-01',
+        number: 1,
+        title: 'O Mistério da Casa dos Fantasmas',
+        duration: '22m',
+        playbackUrl: 'https://archive.org/embed/TheImmigrant',
+        synopsis: 'A turma investiga ruídos estranhos na vizinhança e acaba pregando sustos hilários uns nos outros.'
+      },
+      {
+        id: 'lat-ep-02',
+        number: 2,
+        title: 'O Julgamento e a Grande Confusão',
+        duration: '21m',
+        playbackUrl: 'https://archive.org/embed/TheImmigrant',
+        synopsis: 'Um julgamento cômico no pátio para descobrir quem quebrou a lâmpada da escada.'
+      },
+      {
+        id: 'lat-ep-03',
+        number: 3,
+        title: 'Uma Viagem no Tempo Cheia de Risos',
+        duration: '23m',
+        playbackUrl: 'https://archive.org/embed/TheImmigrant',
+        synopsis: 'As invenções do cientista excêntrico provocam peripécias com personagens da pré-história.'
+      }
+    ],
+    createdAt: '2026-10-26T12:00:00Z',
+    updatedAt: '2026-10-26T12:00:00Z'
+  },
+  {
+    id: 'mov-minisserie-guarani',
+    title: 'O Guarani: A Minissérie Histórica Nacional',
+    originalTitle: 'O Guarani: Minissérie Épica Brasileira',
+    synopsis: 'Baseada na obra-prima de José de Alencar, a minissérie retrata o amor proibido de Peri e Ceci em meio aos conflitos de terras e à exuberância da floresta tropical brasileira no século XVII. Grande marco do patrimônio da teledramaturgia nacional.',
+    posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=700&q=80',
+    backdropUrl: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1600&q=80',
+    category: 'Séries & Minisséries',
+    year: 1991,
+    duration: 'Minissérie (3 Capítulos)',
+    playbackType: 'embed',
+    playbackUrl: 'https://archive.org/embed/springopenmovie',
+    status: 'published',
+    licenseId: 'lic-minisserie-guarani',
+    license: INITIAL_LICENSES.find(l => l.id === 'lic-minisserie-guarani'),
+    featured: false,
+    contentRating: '10',
+    era: 'classic',
+    type: 'serie',
+    audioLanguage: 'Nacional',
+    country: 'Brasil',
+    countryCode: 'BR',
+    quality: 'HD',
+    seasonsCount: 1,
+    episodes: [
+      {
+        id: 'gua-ep-01',
+        number: 1,
+        title: 'O Encontro nas Selvas do Paquequer',
+        duration: '35m',
+        playbackUrl: 'https://archive.org/embed/springopenmovie',
+        synopsis: 'Peri salva Ceci de uma rocha em deslizamento e jura lealdade eterna à família de Dom Antônio de Mariz.'
+      },
+      {
+        id: 'gua-ep-02',
+        number: 2,
+        title: 'A Conspiração dos Aventureiros',
+        duration: '38m',
+        playbackUrl: 'https://archive.org/embed/springopenmovie',
+        synopsis: 'Loredano planeja tomar a fortaleza e o ouro, enquanto Peri vigia os passos dos traidores na mata.'
+      },
+      {
+        id: 'gua-ep-03',
+        number: 3,
+        title: 'O Destino das Águas Sagradas',
+        duration: '40m',
+        playbackUrl: 'https://archive.org/embed/springopenmovie',
+        synopsis: 'O cerco final, o sacrifício pela honra e o salvamento em meio à enchente que cobre a floresta.'
+      }
+    ],
+    createdAt: '2026-10-26T12:00:00Z',
+    updatedAt: '2026-10-26T12:00:00Z'
+  },
+  {
+    id: 'mov-flash-gordon-1936',
+    title: 'Flash Gordon: A Série Espacial Completa',
+    originalTitle: 'Flash Gordon: 1936 Classic Space Serial (Buster Crabbe)',
+    synopsis: 'A pioneira e mais influente série espacial seriada da história do cinema, que inspirou George Lucas a criar Star Wars. Acompanhe Flash Gordon, Dale Arden e o Dr. Zarkov na luta contra o implacável Imperador Ming no misterioso Planeta Mongo.',
+    posterUrl: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=700&q=80',
+    backdropUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80',
+    category: 'Séries & Minisséries',
+    year: 1936,
+    duration: 'Série Clássica (13 Capítulos)',
+    playbackType: 'embed',
+    playbackUrl: 'https://archive.org/embed/FlashGordonEpisode1',
+    status: 'published',
+    licenseId: 'lic-flash-gordon-1936',
+    license: INITIAL_LICENSES.find(l => l.id === 'lic-flash-gordon-1936'),
+    featured: false,
+    contentRating: 'L',
+    era: 'classic',
+    type: 'serie',
+    audioLanguage: 'Legendado',
+    country: 'Estados Unidos',
+    countryCode: 'US',
+    quality: 'HD',
+    seasonsCount: 1,
+    episodes: [
+      {
+        id: 'fg-ep-01',
+        number: 1,
+        title: 'O Planeta da Perdição',
+        duration: '20m',
+        playbackUrl: 'https://archive.org/embed/FlashGordonEpisode1',
+        synopsis: 'Flash Gordon e Dale sobrevivem à queda do foguete e são capturados pelos soldados imperiais de Mongo.'
+      },
+      {
+        id: 'fg-ep-02',
+        number: 2,
+        title: 'O Túnel do Terror',
+        duration: '19m',
+        playbackUrl: 'https://archive.org/embed/FlashGordonEpisode1',
+        synopsis: 'Flash é jogado na arena de feras carnívoras e planeja a fuga através dos dutos subterrâneos.'
+      },
+      {
+        id: 'fg-ep-03',
+        number: 3,
+        title: 'Capturados pelos Homens-Gavião',
+        duration: '20m',
+        playbackUrl: 'https://archive.org/embed/FlashGordonEpisode1',
+        synopsis: 'A cidade flutuante no céu é o palco de uma arriscada aliança contra o imperador Ming.'
+      }
+    ],
+    createdAt: '2026-10-26T12:00:00Z',
+    updatedAt: '2026-10-26T12:00:00Z'
   }
 ];

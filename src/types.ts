@@ -28,6 +28,19 @@ export type MovieEra = 'modern' | 'classic';
 export type MovieWorkType = 'longa' | 'curta' | 'animacao' | 'documentario' | 'anime' | 'serie';
 export type AudioLanguage = 'Dublado' | 'Legendado' | 'Nacional' | 'Sem Diálogo' | 'Original';
 
+export interface Episode {
+  id: string;
+  number: number;
+  title: string;
+  duration?: string;
+  playbackUrl: string;
+  playbackType?: PlaybackType;
+  synopsis?: string;
+  thumbnailUrl?: string;
+}
+
+export type OriginCountry = 'Brasil' | 'Japão' | 'Coreia do Sul' | 'Estados Unidos' | 'México' | 'Reino Unido' | 'Outro';
+
 export interface Movie {
   id: string;
   title: string;
@@ -46,9 +59,13 @@ export interface Movie {
   featured?: boolean;
   contentRating?: ContentRating | string; // 'L', '10', '12', '14', '16'
   era?: MovieEra; // 'modern' (anos 2000+) ou 'classic' (histórico)
-  type?: MovieWorkType; // 'longa' | 'curta' | 'animacao' | 'documentario'
+  type?: MovieWorkType; // 'longa' | 'curta' | 'animacao' | 'documentario' | 'anime' | 'serie'
   audioLanguage?: AudioLanguage; // 'Dublado' | 'Legendado' | 'Nacional' | 'Sem Diálogo'
   quality?: 'HD' | 'Full HD' | '4K Ultra HD';
+  country?: OriginCountry | string;
+  countryCode?: string; // 'BR', 'JP', 'KR', 'US', 'MX', etc.
+  episodes?: Episode[];
+  seasonsCount?: number;
   createdAt: string;
   updatedAt: string;
 }

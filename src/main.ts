@@ -10,6 +10,7 @@ import { adminPanelModal } from './components/adminPanel';
 import { supportModal } from './components/supportModal';
 import { registerPWA } from './pwa';
 import { matchesSearchQuery, buildMovieSearchIndex, normalizeSearch } from './utils/search';
+import { ProgressService } from './services/progressService';
 
 class CineApp {
   private appEl: HTMLElement;
@@ -26,6 +27,8 @@ class CineApp {
   private selectedEraTab: string = 'all'; // 'all', 'modern', 'classic', 'animacao', 'curta', 'longa'
   private selectedRating: string = 'all'; // 'all', 'L', '10', '12', '14', '16'
   private selectedAudio: string = 'all'; // 'all', 'Dublado', 'Legendado', 'Nacional', 'Sem Diálogo'
+  private selectedCountry: string = 'all'; // 'all', 'Brasil', 'Japão', 'Coreia do Sul', 'México', 'Estados Unidos', 'Reino Unido'
+  private kidsModeOnly: boolean = false;
   private sortBy: 'recent' | 'oldest' | 'title' = 'recent';
   private viewingFavoritesOnly: boolean = false;
 
@@ -57,6 +60,10 @@ class CineApp {
       if (this.viewingFavoritesOnly) {
         this.renderCatalogView();
       }
+    });
+
+    window.addEventListener('cinepwa:progress-updated', () => {
+      this.updateContinueWatchingRow();
     });
   }
 
@@ -198,6 +205,8 @@ class CineApp {
         this.selectedEraTab = 'all';
         this.selectedRating = 'all';
         this.selectedAudio = 'all';
+        this.selectedCountry = 'all';
+        this.kidsModeOnly = false;
         this.sortBy = 'recent';
         this.viewingFavoritesOnly = false;
         this.render();
@@ -208,7 +217,7 @@ class CineApp {
     this.appEl.appendChild(header);
 
     // 2. Hero Banner (apenas na visualização padrão da Home)
-    if (!this.searchQuery && !this.viewingFavoritesOnly && this.selectedEraTab === 'all' && this.selectedCategory === 'Todos' && this.selectedRating === 'all' && this.selectedAudio === 'all') {
+    if (!this.searchQuery && !this.viewingFavoritesOnly && this.selectedEraTab === 'all' && this.selectedCategory === 'Todos' && this.selectedRating === 'all' && this.selectedAudio === 'all' && this.selectedCountry === 'all' && !this.kidsModeOnly) {
       const featuredMovie = this.localMovies.find(m => m.featured) || this.localMovies[0];
       if (featuredMovie) {
         const hero = renderHeroBanner(featuredMovie);
@@ -312,6 +321,24 @@ class CineApp {
       list = list.filter(m => {
         const r = String(m.contentRating || '').toUpperCase().replace('+', '');
         return r === this.selectedRating;
+      });
+    }
+
+    // Filtro Modo Kids & Família (Conteúdo Seguro L e 10)
+    if (this.kidsModeOnly) {
+      list = list.filter(m => {
+        const r = String(m.contentRating || '').toUpperCase().replace('+', '');
+        return r === 'L' || r === '10';
+      });
+    }
+
+    // Filtro por País de Origem
+    if (this.selectedCountry !== 'all') {
+      const target = this.selectedCountry.toLowerCase();
+      list = list.filter(m => {
+        const c = (m.country || '').toLowerCase();
+        const code = (m.countryCode || '').toLowerCase();
+        return c.includes(target) || code === target;
       });
     }
 
@@ -500,12 +527,65 @@ class CineApp {
     container.appendChild(categoryBar);
 
     // =========================================================
+    // BARRA DE FILTRO POR PAÍS DE ORIGEM & MODO KIDS / FAMÍLIA
+    // =========================================================
+    const countryBar = document.createElement('div');
+    countryBar.className = 'country-filter-bar';
+    countryBar.innerHTML = `
+      <div class="country-pills-scroll">
+        <span class="country-bar-title">🌍 Origem & Séries:</span>
+        <button class="country-pill-btn ${this.selectedCountry === 'all' ? 'active' : ''}" data-country="all">
+          🌐 Todos os Países
+        </button>
+        <button class="country-pill-btn ${this.selectedCountry === 'Brasil' ? 'active' : ''}" data-country="Brasil">
+          🇧🇷 Brasil
+        </button>
+        <button class="country-pill-btn ${this.selectedCountry === 'Japão' ? 'active' : ''}" data-country="Japão">
+          🇯🇵 Japão (Tokusatsu & Anime)
+        </button>
+        <button class="country-pill-btn ${this.selectedCountry === 'Coreia do Sul' ? 'active' : ''}" data-country="Coreia do Sul">
+          🇰🇷 Coreia do Sul (K-Dramas)
+        </button>
+        <button class="country-pill-btn ${this.selectedCountry === 'México' ? 'active' : ''}" data-country="México">
+          🇲🇽 México (Humor Latino)
+        </button>
+        <button class="country-pill-btn ${this.selectedCountry === 'Estados Unidos' ? 'active' : ''}" data-country="Estados Unidos">
+          🇺🇸 Estados Unidos
+        </button>
+        <button class="country-pill-btn ${this.selectedCountry === 'Reino Unido' ? 'active' : ''}" data-country="Reino Unido">
+          🇬🇧 Reino Unido
+        </button>
+      </div>
+
+      <button class="btn-kids-mode ${this.kidsModeOnly ? 'active' : ''}" id="btn-toggle-kids-mode" title="Conteúdo seguro para crianças (Classificação Livre e 10 anos)">
+        <span>👶</span>
+        <span class="kids-text">Modo Kids</span>
+        <span class="kids-switch-indicator ${this.kidsModeOnly ? 'active' : ''}"></span>
+      </button>
+    `;
+
+    countryBar.querySelectorAll('[data-country]').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const country = (e.currentTarget as HTMLElement).getAttribute('data-country') || 'all';
+        this.selectedCountry = country;
+        this.renderCatalogView();
+      });
+    });
+
+    countryBar.querySelector('#btn-toggle-kids-mode')?.addEventListener('click', () => {
+      this.kidsModeOnly = !this.kidsModeOnly;
+      this.renderCatalogView();
+    });
+
+    container.appendChild(countryBar);
+
+    // =========================================================
     // PAINEL DE FILTROS AVANÇADOS (ETÁRIA & ORDENAÇÃO)
     // =========================================================
     const filterPanel = document.createElement('div');
     filterPanel.className = 'catalog-nav-panel';
 
-    const hasActiveFilters = this.selectedEraTab !== 'all' || this.selectedCategory !== 'Todos' || this.selectedRating !== 'all' || this.selectedAudio !== 'all' || this.sortBy !== 'recent';
+    const hasActiveFilters = this.selectedEraTab !== 'all' || this.selectedCategory !== 'Todos' || this.selectedRating !== 'all' || this.selectedAudio !== 'all' || this.selectedCountry !== 'all' || this.kidsModeOnly || this.sortBy !== 'recent';
     const totalLoaded = this.getAllCombinedMovies().length;
     const totalEstimate = this.totalLiveFound > 0 ? this.totalLiveFound : '8.800+';
 
@@ -591,6 +671,8 @@ class CineApp {
       this.selectedCategory = 'Todos';
       this.selectedRating = 'all';
       this.selectedAudio = 'all';
+      this.selectedCountry = 'all';
+      this.kidsModeOnly = false;
       this.sortBy = 'recent';
       this.liveArchiveMovies = [];
       this.currentLivePage = 1;
@@ -606,14 +688,16 @@ class CineApp {
     const allFiltered = this.getAllCombinedMovies();
 
     // CASO 1: SE UMA CATEGORIA ESPECÍFICA OU FILTRO FOR SELECIONADO
-    const isSingleCategoryMode = this.selectedCategory !== 'Todos' || this.selectedAudio !== 'all' || this.selectedEraTab !== 'all' || this.selectedRating !== 'all';
+    const isSingleCategoryMode = this.selectedCategory !== 'Todos' || this.selectedAudio !== 'all' || this.selectedEraTab !== 'all' || this.selectedRating !== 'all' || this.selectedCountry !== 'all' || this.kidsModeOnly;
 
     if (isSingleCategoryMode) {
       const section = document.createElement('section');
       section.className = 'catalog-section';
 
       let sectionTitle = 'Filmes Disponíveis';
-      if (this.selectedAudio === 'Dublado') sectionTitle = '🎙️ Filmes 100% Dublados em Português';
+      if (this.kidsModeOnly) sectionTitle = '👶 Modo Kids & Família (Conteúdo Seguro Livre e 10 Anos)';
+      else if (this.selectedCountry !== 'all') sectionTitle = `🌍 Séries e Obras: ${this.selectedCountry}`;
+      else if (this.selectedAudio === 'Dublado') sectionTitle = '🎙️ Filmes 100% Dublados em Português';
       else if (this.selectedAudio === 'Legendado') sectionTitle = '💬 Filmes com Legendas em Português';
       else if (this.selectedEraTab === 'modern') sectionTitle = '🌟 Lançamentos & Produções Modernas (2020-2026)';
       else if (this.selectedCategory.toLowerCase().includes('série') || this.selectedCategory.toLowerCase().includes('serie')) sectionTitle = '📺 Séries, Minisséries & Produções de TV';
@@ -625,7 +709,7 @@ class CineApp {
           <div>
             <h2 class="section-title">${sectionTitle}</h2>
             <span class="load-more-info" id="category-count-badge" style="display:block; margin-top: 4px;">
-              Exibindo ${allFiltered.length} títulos (carregando em lotes de 50)
+              Exibindo ${allFiltered.length} títulos
             </span>
           </div>
           <button class="btn-clear-filters" id="btn-back-to-all-categories">
@@ -640,6 +724,8 @@ class CineApp {
         this.selectedAudio = 'all';
         this.selectedEraTab = 'all';
         this.selectedRating = 'all';
+        this.selectedCountry = 'all';
+        this.kidsModeOnly = false;
         this.liveArchiveMovies = [];
         this.currentLivePage = 1;
         this.renderCatalogView();
@@ -661,6 +747,41 @@ class CineApp {
       container.appendChild(section);
       this.renderLoadMoreSection(container);
       return;
+    }
+
+    // =========================================================
+    // SEÇÃO "CONTINUAR ASSISTINDO" (SE HOUVER HISTÓRICO ATIVO)
+    // =========================================================
+    const continueItems = ProgressService.getContinueWatchingMovies(this.localMovies);
+    if (continueItems.length > 0) {
+      const continueSec = document.createElement('section');
+      continueSec.className = 'catalog-section continue-watching-section';
+      continueSec.id = 'continue-watching-section';
+      continueSec.innerHTML = `
+        <div class="section-header-row">
+          <h2 class="section-title">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#e50914" stroke="#e50914" stroke-width="2">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            Continuar Assistindo (${continueItems.length})
+          </h2>
+          <button class="btn-clear-filters" id="btn-clear-all-progress" title="Limpar histórico recente de reprodução">
+            Limpar Histórico
+          </button>
+        </div>
+        <div class="movies-grid continue-grid" id="continue-watching-grid"></div>
+      `;
+
+      continueSec.querySelector('#btn-clear-all-progress')?.addEventListener('click', () => {
+        if (confirm('Deseja limpar seu histórico de títulos em andamento?')) {
+          localStorage.removeItem('cinepwa_continue_watching');
+          continueSec.remove();
+        }
+      });
+
+      const cwGrid = continueSec.querySelector('#continue-watching-grid') as HTMLElement;
+      continueItems.forEach(item => cwGrid.appendChild(renderMovieCard(item.movie)));
+      container.appendChild(continueSec);
     }
 
     // CASO 2: VISUALIZAÇÃO PADRÃO "TODOS" — DIVIDIDO EM CATEGORIAS NÍTIDAS
@@ -888,6 +1009,26 @@ class CineApp {
       if (this.isLoadingLive) {
         btn.innerHTML = `<span class="live-loading-spinner"></span> Carregando Filmes em Português...`;
       }
+    }
+  }
+
+  private updateContinueWatchingRow() {
+    const existing = document.getElementById('continue-watching-section');
+    const items = ProgressService.getContinueWatchingMovies(this.localMovies);
+    if (!existing) {
+      if (items.length > 0 && !this.searchQuery && !this.viewingFavoritesOnly) {
+        this.renderCatalogView();
+      }
+      return;
+    }
+    if (items.length === 0) {
+      existing.remove();
+      return;
+    }
+    const cwGrid = existing.querySelector('#continue-watching-grid');
+    if (cwGrid) {
+      cwGrid.innerHTML = '';
+      items.forEach(item => cwGrid.appendChild(renderMovieCard(item.movie)));
     }
   }
 

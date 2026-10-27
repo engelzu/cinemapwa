@@ -73,6 +73,27 @@ export function getQualityBadgeHtml(quality?: string, year?: number): string {
   return `<span class="badge-quality" title="Resolução máxima disponível: ${q}">${q}</span>`;
 }
 
+import { ProgressService } from '../services/progressService';
+
+export function getCountryBadgeHtml(country?: string, code?: string): string {
+  if (!country && !code) return '';
+  const c = (code || country || '').toUpperCase();
+  let flag = '🌍';
+  let short = code || '';
+  if (c.includes('BR') || country === 'Brasil') { flag = '🇧🇷'; short = 'BR'; }
+  else if (c.includes('JP') || country === 'Japão') { flag = '🇯🇵'; short = 'JP'; }
+  else if (c.includes('KR') || country === 'Coreia do Sul') { flag = '🇰🇷'; short = 'KR'; }
+  else if (c.includes('US') || country === 'Estados Unidos') { flag = '🇺🇸'; short = 'US'; }
+  else if (c.includes('MX') || country === 'México') { flag = '🇲🇽'; short = 'MX'; }
+  else if (c.includes('GB') || country === 'Reino Unido') { flag = '🇬🇧'; short = 'GB'; }
+  else if (c.includes('FR') || country === 'França') { flag = '🇫🇷'; short = 'FR'; }
+  else if (c.includes('DE') || country === 'Alemanha') { flag = '🇩🇪'; short = 'DE'; }
+  else if (c.includes('NL')) { flag = '🇳🇱'; short = 'NL'; }
+  else if (c.includes('NO')) { flag = '🇳🇴'; short = 'NO'; }
+
+  return `<span class="badge-country" title="Origem: ${country || short}">${flag} ${short}</span>`;
+}
+
 export function renderMovieCard(movie: Movie): HTMLElement {
   const card = document.createElement('article');
   card.className = 'movie-card';
@@ -85,6 +106,12 @@ export function renderMovieCard(movie: Movie): HTMLElement {
   const ratingHtml = getContentRatingHtml(movie.contentRating);
   const audioBadge = getAudioBadgeHtml(movie.audioLanguage);
   const qualityBadge = getQualityBadgeHtml(movie.quality, movie.year);
+  const countryBadge = getCountryBadgeHtml(movie.country, movie.countryCode);
+  const hasEpisodes = Boolean(movie.episodes && movie.episodes.length > 0);
+  const episodesBadge = hasEpisodes ? `<span class="badge-series" title="${movie.episodes!.length} episódios disponíveis">📺 ${movie.episodes!.length} EPS</span>` : '';
+
+  const progress = ProgressService.getProgress(movie.id);
+  const hasProgress = Boolean(progress && progress.percent > 0 && progress.percent < 92);
 
   // Obter poster em alta resolução cinematográfica (eliminando capturas borradas de vídeo)
   let initialPoster = movie.posterUrl;
@@ -108,6 +135,8 @@ export function renderMovieCard(movie: Movie): HTMLElement {
       <div class="card-top-badges">
         <div class="badges-group-left">
           ${audioBadge}
+          ${countryBadge}
+          ${episodesBadge}
         </div>
         <button class="card-fav-btn ${isFav ? 'is-fav' : ''}" data-movie-id="${movie.id}" title="${isFav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}" aria-label="Favoritar">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="${isFav ? '#e50914' : 'none'}" stroke="${isFav ? '#e50914' : '#fff'}" stroke-width="2.5">
@@ -116,13 +145,19 @@ export function renderMovieCard(movie: Movie): HTMLElement {
         </button>
       </div>
 
+      ${hasProgress ? `
+        <div class="card-progress-bar" title="${progress!.percent}% assistido">
+          <div class="card-progress-fill" style="width: ${progress!.percent}%"></div>
+        </div>
+      ` : ''}
+
       <div class="card-hover-actions">
-        <button class="btn-play-circle" data-play-id="${movie.id}" title="Assistir ${movie.title}" aria-label="Assistir filme">
+        <button class="btn-play-circle" data-play-id="${movie.id}" title="${hasProgress ? `Continuar (${progress!.percent}%)` : `Assistir ${movie.title}`}" aria-label="Assistir filme">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
             <polygon points="5 3 19 12 5 21 5 3"></polygon>
           </svg>
         </button>
-        <span class="hover-label-play">Assistir</span>
+        <span class="hover-label-play">${hasProgress ? `Retomar ${progress!.percent}%` : 'Assistir'}</span>
       </div>
     </div>
 
